@@ -1,5 +1,5 @@
 import { UserService } from './shared/services/user/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { User } from './shared/models/user.model';
 
 @Component({
@@ -7,12 +7,22 @@ import { User } from './shared/models/user.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnChanges{
   users: Array<User>;
-  activeUsers = ['Max', 'Anna'];
-  inactiveUsers = ['Chris', 'Manu'];
+  activeUsers: Array<User>;
+  inactiveUsers: Array<User>;
 
-  constructor( private userService: UserService){}
+  constructor( private userService: UserService ){
+    this.userService.usersActual.subscribe((receivedUsers:Array<User>) => {
+      this.users = receivedUsers;
+      this.activeUsers = this.userService.getUsersByStatus(true);
+      this.inactiveUsers = this.userService.getUsersByStatus(false);
+    });
+  }
+
+  ngOnChanges() {
+
+  }
 
   ngOnInit():void {
     this.userService.addUser(new User('Max', true));
@@ -20,16 +30,8 @@ export class AppComponent implements OnInit{
     this.userService.addUser(new User('Chris', false));
     this.userService.addUser(new User('Manu', false));
     this.users = this.userService.users;
-    console.log("Przypadki: "+ this.userService.getUsersWithStatus(false));
+    this.activeUsers = this.userService.getUsersByStatus(true);
+    this.inactiveUsers = this.userService.getUsersByStatus(false);
   }
 
-  onSetToInactive(id: number) {
-    this.inactiveUsers.push(this.activeUsers[id]);
-    this.activeUsers.splice(id, 1);
-  }
-
-  onSetToActive(id: number) {
-    this.activeUsers.push(this.inactiveUsers[id]);
-    this.inactiveUsers.splice(id, 1);
-  }
 }

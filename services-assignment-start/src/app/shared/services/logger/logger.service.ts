@@ -11,4 +11,12 @@ export class LoggerService {
   logStatusChange(user:User) {
     console.log('User: ' + user.name + ' status changed to: ' + user.status);
   }
+
+  logActivatedIncrease(actualActivatedCount: number){
+    console.log('Acivated count: ' + actualActivatedCount);
+  }
+  
+  logDisactiavatedIncrease(actualInactiveCount: number){
+    console.log('Disactivated count: ' + actualInactiveCount);
+  }
 }

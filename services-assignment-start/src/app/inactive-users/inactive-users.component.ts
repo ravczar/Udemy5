@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { User } from '../shared/models/user.model';
+import { UserService } from '../shared/services/user/user.service';
 
 @Component({
   selector: 'app-inactive-users',
@@ -6,10 +8,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./inactive-users.component.css']
 })
 export class InactiveUsersComponent {
-  @Input() users: string[];
-  @Output() userSetToActive = new EventEmitter<number>();
+  @Input() users: Array<User>;
 
-  onSetToActive(id: number) {
-    this.userSetToActive.emit(id);
+  constructor( private userService: UserService){}
+
+  onSetToActive(name: string) {
+    this.userService.changeUserStatus(name);
+    //this.userService.usersActual.emit(this.users);
   }
+
 }
