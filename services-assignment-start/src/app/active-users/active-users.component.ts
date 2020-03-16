@@ -18,7 +18,6 @@ export class ActiveUsersComponent implements OnInit {
 
   onSetToInactive(name: string) {
     this.userService.changeUserStatus(name);
-    //this.userService.usersActual.emit(this.users);
   }
 
 
